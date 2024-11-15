@@ -1,0 +1,12 @@
+version: "3.8"
+
+services:
+  job_extraction:
+    build: .
+    ports:
+    - "8888:8888"
+    volumes:
+      - ./app:/app  # Mounts the host's ./app folder to the container's /app folder
+    environment:
+      - NEBIUS_API_KEY=${NEBIUS_API_KEY}  # Passes the API key from your .env file
+    entrypoint: /bin/bash  # Opens a Bash shell when the container starts
