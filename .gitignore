@@ -162,6 +162,7 @@ cython_debug/
 # This project's working files and dev clutter
 
 jobs.json
+jobs.old
 jobs_extracted.json
 jobs_extracted.old
 notes.txt

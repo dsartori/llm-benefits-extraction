@@ -3,7 +3,6 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-# Load the job data
 with open("jobs_extracted.json", "r") as file:
     job_data = json.load(file)
 
@@ -15,18 +14,16 @@ categories = ["health insurance", "retirement plan", "paid time off",
 sector_codes = [job.get("sector", "unknown") for job in job_data]
 noc_codes = [str(job.get("nocs_2021", "unknown"))[:2] for job in job_data]  # Simplify to first 2 digits
 
-# Initialize DataFrames for benefit counts by sector and by NOC code
+
 benefit_counts_sector = pd.DataFrame(0, index=pd.Index(sector_codes, name="Sector Code"), columns=categories)
 benefit_counts_noc = pd.DataFrame(0, index=pd.Index(noc_codes, name="NOC Code"), columns=categories)
 
-# Initialize Series for job counts by sector and by NOC code
 job_counts_sector = pd.Series(0, index=benefit_counts_sector.index)
 job_counts_noc = pd.Series(0, index=benefit_counts_noc.index)
 
-# Count occurrences of each benefit type for each sector code and NOC code
 for job, sector, noc in zip(job_data, sector_codes, noc_codes):
     benefits = job.get("job_benefits", {})
-    if isinstance(benefits, dict):  # Ensure it's a dictionary
+    if isinstance(benefits, dict): 
         # Increment job counts
         job_counts_sector[sector] += 1
         job_counts_noc[noc] += 1
