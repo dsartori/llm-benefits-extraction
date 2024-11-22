@@ -1,10 +1,9 @@
 version: "3.8"
 
 services:
-  job_extraction:
+  llm-benefits:
     build: .
     ports:
-    - "8888:8888"
     volumes:
       - ./app:/app  # Mounts the host's ./app folder to the container's /app folder
     environment:

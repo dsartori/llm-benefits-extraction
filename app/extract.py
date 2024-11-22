@@ -4,10 +4,8 @@ import os
 from openai import OpenAI
 from dotenv import load_dotenv
 
-# Load environment variables from .env file
 load_dotenv()
 
-# Initialize the OpenAI client
 client = OpenAI(
     base_url="https://api.studio.nebius.ai/v1/",
     api_key=os.getenv("NEBIUS_API_KEY"),
@@ -17,15 +15,11 @@ datafile = "jobs.json"
 
 def parse_llm_response(response):
     # Clean up typical LLM response issues
-
-    # Extract content and strip whitespace
     content = response.choices[0].message.content.strip()
-    
-    # Remove leading/trailing triple backticks if present
+    # backticks 
     if content.startswith("```") and content.endswith("```"):
         content = content[3:-3].strip()
-    
-    # Remove line breaks, backslashes, and extra whitespace
+    # line breaks, backslashes, whitespace
     cleaned_content = re.sub(r'\\n', '', content)  
     cleaned_content = re.sub(r'\s+', ' ', cleaned_content)  
     cleaned_content = cleaned_content.replace('\\', '')  
@@ -35,7 +29,6 @@ def parse_llm_response(response):
         print(f"\n* JSON decoding failed: {e}")
         return cleaned_content  
 
-# Function to extract benefits & types from a job description
 def extract_benefits(job_description):
     response = client.chat.completions.create(
         model="meta-llama/Meta-Llama-3.1-405B-Instruct",
@@ -43,7 +36,7 @@ def extract_benefits(job_description):
             {"role": "system", "content": """Extract the job benefits from this description and map each benefit to one of the following categories:
 
 - "health insurance": e.g., "medical coverage", "health benefits"
-- "retirement plan": e.g., "401k", "pension"
+- "retirement plan": e.g., "rrsp", "pension"
 - "paid time off": e.g., "vacation", "sick leave"
 - "bonus": e.g., "performance bonus", "annual bonus"
 - "wellness programs": e.g., "gym membership", "employee wellness"
@@ -71,21 +64,19 @@ Do not format the data."""},
 with open(datafile, "r") as file:
     job_data = json.load(file)
      
-# Extract job benefits for each job description
+# Extract job benefits
 print("Extracting job benefits:")
 for job in job_data:
     try:
         job_description = job.get("text", "")
         job_benefits = extract_benefits(job_description)
         job["job_benefits"] = job_benefits  
-        print(".", end="")
+        print(".", end="", flush=True)
         
     except Exception as e:
-        print(f"Error processing job '{job.get('job_title', 'Unknown')}': {e}")
+        print(f"\nError processing job '{job.get('job_title', 'Unknown')}': {e}")
 
-print("\nJob benefits extraction completed.")
-
-# Save updated data with benefits included
+# Save data
 with open("jobs_extracted.json", "w") as file:
     json.dump(job_data, file, indent=2)
 

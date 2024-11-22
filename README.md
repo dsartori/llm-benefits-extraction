@@ -2,15 +2,12 @@
 # Job Benefits Extraction from free text with LLMs
 
 
-
-
-
-## Setup
+## Procedure
 
 1. **Clone the Repository** and navigate to the project directory:
    ```bash
-   git clone https://github.com/dsartori/job-benefits-extraction.git
-   cd job-benefits-extraction
+   git clone https://github.com/dsartori/llm-benefits-extraction.git
+   cd llm-benefits-extraction
    ```
 
 2. **Add API Key**: Create a `.env` file in the root directory with your Nebius API key:
@@ -29,6 +26,17 @@
    ```bash
    python extract.py
    ```
+
+5. **View Results**:
+   The extracted job benefits will be saved in the `app/jobs_extracted.json` file. You can open this file to review the results.
+
+6. **Clustering and Analysis**:
+   Run the `analyze.py` script to perform clustering on the `jobs_extracted.json` file. This script will categorize jobs by benefits and generate visualizations:
+   ```bash
+   python analyze.py
+   ```
+   The `analyze.py` script generates simple heatmaps to help visualize the distribution of job benefits across different categories.
+
 
 ## Project Structure
 
