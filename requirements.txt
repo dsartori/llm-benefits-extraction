@@ -1,4 +1,4 @@
-openai
+requests
 python-dotenv
 scikit-learn
 matplotlib

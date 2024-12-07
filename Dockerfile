@@ -12,7 +12,9 @@ COPY requirements.txt requirements.txt
 RUN pip install --no-cache-dir -r requirements.txt
 
 # Copy the application code into the container
-COPY . .
+COPY app/ .
+
+RUN export $(cat /app/.env | xargs)
 
 # Set the default command to Bash (will be overridden in docker-compose.yml)
 CMD ["/bin/bash"]
